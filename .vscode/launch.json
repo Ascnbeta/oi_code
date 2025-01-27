@@ -5,14 +5,14 @@
             "name": "C/C++: g++.exe 生成和调试活动文件",
             "type": "cppdbg",
             "request": "launch",
-            "program": "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
+            "program": "E:\\codes\\exe\\${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\toolchains\\mingw-w64\\bin\\gdb.exe",
+            "miDebuggerPath": "E:\\Dev-Cpp\\MinGW64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -38,7 +38,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\toolchains\\mingw-w64\\bin\\gdb.exe",
+            "miDebuggerPath": "E:\\Dev-Cpp\\MinGW64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -64,7 +64,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",
-            "miDebuggerPath": "D:\\toolchains\\LLVM-mingw\\bin\\lldb.exe",
+            "miDebuggerPath": "E:\\Dev-Cpp\\MinGW64\\bin\\g++.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
