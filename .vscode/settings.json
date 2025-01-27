@@ -100,5 +100,11 @@
     "workbench.colorCustomizations": {
 
     },
-    "workbench.colorTheme": "Default Dark+ Experimental"
+    "workbench.colorTheme": "Default Dark+ Experimental",
+    "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
+        "clang-diagnostic-error",
+        "clang-diagnostic-error",
+        "clang-diagnostic-error",
+        "clang-diagnostic-error"
+    ]
 }
