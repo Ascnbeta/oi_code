@@ -2,8 +2,8 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "cppbuilds",
-            "command": "E:\\Dev-Cpp\\MinGW64\\bin\\g++.exe",
+            "label": "A",
+            "command": "E:\\MinGW-w64\\mingw64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",

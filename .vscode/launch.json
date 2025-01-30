@@ -12,7 +12,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "E:\\Dev-Cpp\\MinGW64\\bin\\gdb.exe",
+            "miDebuggerPath": "E:\\MinGW-w64\\mingw64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -25,7 +25,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "cppbuilds"
+            "preLaunchTask": "A"
         },
         {
             "name": "C/C++: gcc.exe 生成和调试活动文件",
