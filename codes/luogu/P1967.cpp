@@ -1,115 +1,111 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int maxn = 1e4+8;
+const int maxm = 1e5+6;
 int n,m,q;
 struct edge{
-	int to,nxt,w;
-}e[100004];
-int head[10003],tot;
-struct edg{
 	int u,v,w;
-}eg[100004];
-int totg;
-inline void addg(int u,int v,int w) {
-	eg[++totg].u = u;
-	eg[totg].v = v;
-	eg[totg].w = w;
-}
-inline void add(int u,int v,int w) {
-	e[++tot].to = v;
-	e[tot].nxt = head[u];
-	e[tot].w = w;
-	head[u] = tot;
-}
-bool cmp(edg x,edg y) {
-	return x.w > y.w;
-}
-int father[10004];
+	bool operator < (const edge &y) const{
+		return w > y.w;
+	}
+}ed[maxm];
+int father[maxn],rk[maxn];
 inline int find(int x) {
 	int t = x;
-	while (father[x] != x) x = father[x];
-	while (father[t] != t) {
-		int w = father[t];
-		father[t] = x;
-		t = w;
-	}
+	while (x != father[x]) x = father[x];
+	int w;
+	while (t != father[t]) w = father[t],father[t] = x,t = w;
 	return x;
 }
 inline void merge(int x,int y) {
-	while(father[x] != x) x = father[x];
-	while(father[y] != y) y = father[y];
-	father[x] = y;
+	int p = find(x),q = find(y);
+	if (rk[p] <= rk[q]) {
+		father[p] = q;
+		rk[q] = max(rk[p]+1,rk[q]);
+	}else{
+		father[q] = p;
+		rk[p] = max(rk[q]+1,rk[p]);
+	}
 }
+struct node{
+	int to,w;
+};
+vector<node> e[maxn];
 inline void kruskal() {
 	for (int i = 1; i <= n; i++) father[i] = i;
-	int cnt = 0;
 	for (int i = 1; i <= m; i++) {
-		int t1 = find(eg[i].u),t2 = find(eg[i].v);
-		if (t1 == t2) continue;
-		else{
-			add(eg[i].u,eg[i].v,eg[i].w);
-			add(eg[i].v,eg[i].u,eg[i].w);
-			merge(t1,t2);
+		if (find(ed[i].u) != find(ed[i].v)) {
+			e[ed[i].u].push_back({ed[i].v,ed[i].w});
+			e[ed[i].v].push_back({ed[i].u,ed[i].w});
+			//cout << ed[i].u << ed[i].v << '\n';
+			merge(ed[i].u,ed[i].v);
 		}
 	}
 }
-int d[10004],f[10004][30],w[10004][30];
+int f[maxn][20],dep[maxn],minn[maxn][20];
+bool vis[maxn];
 void dfs(int u,int fa) {
-	d[u] = d[fa] + 1;
-	for (int i = head[u];i ;i = e[i].nxt) {
-		int v = e[i].to;
+	//cout << u << '\n';
+	vis[u] = true;
+	dep[u] = dep[fa] + 1;
+	f[u][0] = fa;
+	for (int i = 0; i < e[u].size(); i++) {
+		int v = e[u][i].to;
 		if (v == fa) continue;
-		dfs(v,fa);
-		f[v][0] = u;
-		w[v][0] = e[i].w;
+		dfs(v,u);
+		minn[v][0] = e[u][i].w;
+	}
+}
+inline void init() {
+	int k = log2(n) + 1;
+	for (int i = 1; i <= k; i++) {
+		for (int j = 1; j <= n; j++) {
+			f[j][i] = f[f[j][i-1]][i-1];
+			minn[j][i] = min(minn[j][i-1],minn[f[j][i-1]][i-1]);
+		}
 	}
 }
 inline int lca(int x,int y) {
-	if (find(x) != find(y)) {
-		return -1;
-	}
-	int ans = 0x3f3f3f3f;
-	if (d[x] > d[y]) swap(x,y);
-	for (int j = 15; j >= 0 && d[x] != d[y]; j--) {
-		if (d[f[y][j]] == 0) continue;
-		else {
-			ans = min(ans,w[y][j]);
-			y = f[y][j];
-		} 
-	}
-	if (x == y) {
-		return ans;
-	}
-	for (int j = 15; j >= 0; j--) {
-		if (f[x][j] != f[y][j]) {
-			ans = min(ans,min(w[x][j],w[y][j]));
-			x = f[x][j],y = f[y][j];
+	if (find(x) != find(y)) return -1;
+	if (dep[x] > dep[y]) swap(x,y);
+	int k = log2(dep[y]) + 1,ret = 0x3f3f3f3f;
+	//cout << k << '\n';
+	if (dep[x] != dep[y]) {
+		for (int i = k; i >= 0; i--) {
+			// puts("1");
+			if (f[y][i] != 0 && dep[f[y][i]] >= dep[x]) ret = min(ret,minn[y][i]),y = f[y][i];
 		}
 	}
-	ans = min(ans,min(w[x][0],w[x][0]));
-	return ans;
+	if (x == y) return ret;
+	for (int i = k; i >= 0; i--) {
+		if (f[x][i] != 0 && f[y][i] != 0 && f[x][i] != f[y][i]) {
+			// puts("1");
+			//cout << minn[x][i] << '\n';
+			ret = min(ret,minn[x][i]);
+			ret = min(ret,minn[y][i]);
+			x = f[x][i];
+			y = f[y][i];
+		}
+	}
+	return min(minn[x][0],min(minn[y][0],ret));
 }
 int main () {
 	cin >> n >> m;
 	for (int i = 1; i <= m; i++) {
-		int x,y,z;
-		cin >> x >> y >> z;
-		addg(x,y,z);
+		cin >> ed[i].u >> ed[i].v >> ed[i].w;
 	}
-	sort(eg+1,eg+m+1,cmp);
+	memset(minn,0x3f,sizeof(minn));
+	sort(ed+1,ed+m+1);
 	kruskal();
-	dfs(1,0);
-	for (int i = 1; (1<<i) <= n; i++) {
-		for (int j = 1; j <= n; j++) {
-			f[j][i] = f[f[j][j-1]][j-1];
-			w[j][i] = min(w[j][i-1],w[w[j][i-1]][i-1]);
-		}
+	for (int i = 1; i <= n; i++) {
+		if (!vis[i]) dfs(i,0);
 	}
+	init();
 	cin >> q;
 	while (q--) {
 		int x,y;
 		cin >> x >> y;
 		cout << lca(x,y) << '\n';
-		//puts("1");
 	}
 	return 0;
 }
