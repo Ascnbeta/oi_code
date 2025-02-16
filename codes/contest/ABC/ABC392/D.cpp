@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<<< 
 #include <bits/stdc++.h>
 using namespace std;
 const double t1 = 1.0;

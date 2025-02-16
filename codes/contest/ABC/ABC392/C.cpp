@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<<< 
 #include <bits/stdc++.h>
 using namespace std;
 int n,p[300003],q[300004];

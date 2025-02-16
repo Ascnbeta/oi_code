@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<<< 
 #include <bits/stdc++.h>
 #define int unsigned long long
 using namespace std;
