@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int maxn = 1e2+10;
-int n,k,sum,ans;
-int e[maxn][maxn];
-bool vis[maxn];
-int dis[maxn];
+int n,W,ans;
+int e[203][203];
+int dis[203];bool vis[203];
 inline void prim() {
 	memset(dis,0x3f,sizeof(dis));
+	memset(vis,0,sizeof(vis));
+	ans = 0;
 	dis[1] = 0;
-	for (int i = 1 ; i < n; i++) {
+	for (int i = 1; i < n; i++) {
 		int p = 0;
 		for (int j = 1; j <= n; j++) {
 			if (!vis[j]&&(p==0||dis[j]<dis[p])) p = j;
@@ -19,25 +19,26 @@ inline void prim() {
 		}
 	}
 	for (int i = 1; i <= n; i++) {
+		if (dis[i] == 0x3f3f3f3f) {
+			puts("-1");
+			return;
+		}
 		ans += dis[i];
 	}
+	cout << ans << '\n';
 }
 int main () {
 #ifdef LOCAL
 	freopen("D:\\codes\\exe\\a.in","r",stdin);
 	freopen("D:\\codes\\exe\\a.out","w",stdout);
 #endif
-	cin >> n >> k;
+	cin >> n >> W;
 	memset(e,0x3f,sizeof(e));
-	for (int i = 1; i <= k; i++) {
+	for (int i = 1; i <= W; i++) {
 		int u,v,w;
 		cin >> u >> v >> w;
-		if (w != 0) {
-			e[u][v] = e[v][u] = min(e[u][v],w);
-		}
-		sum += w;
+		e[u][v] = e[v][u] = min(e[u][v],w);
+		prim();
 	}
-	prim();
-	cout << sum - ans << '\n';
 	return 0;
 }
