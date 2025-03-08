@@ -3,17 +3,18 @@
         {
             "type": "cppbuild",
             "label": "cppbuilds",
-            "command": "D:\\toolchains\\LLVM-mingw\\bin\\g++.exe",
+            "command": "D:\\toolchains\\mingw-w64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}\\${fileBasename}",
                 "-o",
+                "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
                 "-std=c++14",
                 "-Wall",
                 "-Wextra",
-                "-Wl","-stack=12345678",
-                "D:\\codes\\exe\\${fileBasenameNoExtension}.exe"
+                "-Wl,-stack=12345678",
+                
             ],
             "options": {
                 "cwd": "${fileDirname}"
