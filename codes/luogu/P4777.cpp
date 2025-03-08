@@ -5,7 +5,10 @@ const int maxn = 1e5+30;
 int n;
 int a[maxn],b[maxn];
 inline int exgcd(int a,int b,__int128 &x,__int128 &y) {
-	if (b == 0) {x = 1,y = 0;return a;}
+	if (b == 0) {
+		x = 1,y = 0;
+		return a;
+	}
 	int d = exgcd(b,a%b,x,y);
 	__int128 tmp = x;
 	x = y;
@@ -15,6 +18,8 @@ inline int exgcd(int a,int b,__int128 &x,__int128 &y) {
 inline void merge(int p,int q) {
 	__int128 x,y;
 	int gcd = exgcd(b[p],b[q],x,y);
+	// cerr << (long long) x <<' ' << (long long)y << '\n';
+	//if ((a[q]-a[p]) % gcd != 0) assert(0);
 	a[q] = (__int128)x  * ((__int128)(a[q]-a[p])/ gcd % (b[q]/gcd)) % (b[q]/gcd);
 	if (a[q] < 0) a[q] += b[q]/gcd;
 	b[q] = (__int128)b[p]*b[q]/gcd; 
@@ -28,8 +33,10 @@ signed main () {
 #endif
 	cin >> n;
 	for (int i = 1; i <= n; i++) cin >> b[i] >> a[i];
+	// cout << a[1] << ' ' << b[1] << '\n';
 	for (int i = 2; i <= n; i++) {
 		merge(i-1,i);
+		//cerr << a[i] << ' ' << b[i] << '\n'; 
 	}
 	cout << a[n]%b[n] << '\n';
 	return 0;
