@@ -14,7 +14,7 @@
                 "-Wall",
                 "-Wextra",
                 "-Wl,-stack=12345678",
-                
+                "-DLOCAL"
             ],
             "options": {
                 "cwd": "${fileDirname}"
