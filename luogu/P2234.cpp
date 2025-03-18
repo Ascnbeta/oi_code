@@ -36,7 +36,7 @@ inline int getpre(int v) {//last < v
 inline int getnext(int v) {//first >= v
     return getval(getrank(v));
 }
-#define ch(x,d) ((d)?(rs[p]):(ls[x]))
+#define ch(x,d) ((d)?(rs[x]):(ls[x]))
 inline void rotate(int p,int d) {
     swap(ls[p],rs[p]);
     swap(ls[ch(p,d^1)],rs[ch(p,d^1)]);
@@ -73,19 +73,19 @@ int main() {
 #endif
     cin >> n;
     rt = create(0x3f3f3f3f);
-    insert(rt,-1);
+    insert(rt,(int)0xcfcfcfcf);
     for (int i = 1; i <= n; i++) {
         int x;
         cin >> x;
         int pr = getpre(x),nt = getnext(x);
-        printf("debug:%d\n",i);
-        cout << x << ' ' << pr << ' ' << nt << '\n';
-        for (int i = 1; i <= tot; i++) {
-            cout << i << ' ' << ls[i] << ' ' << rs[i] << ' ' << val[i] << ' ' << siz[i] << '\n';
-        }
+        // printf("debug:%d\n",i);
+        // cout << x << ' ' << pr << ' ' << nt << '\n';
+        // for (int i = 1; i <= tot; i++) {
+        //     cout << i << ' ' << ls[i] << ' ' << rs[i] << ' ' << val[i] << ' ' << siz[i] << '\n';
+        // }
         if (i == 1) ans += x;
-        else if (pr == -1) ans += nt-x;
-        else if (nt == INT_MAX) ans += x-pr;
+        else if (pr == (int)0xcfcfcfcf) ans += nt-x;
+        else if (nt == 0x3f3f3f3f) ans += x-pr;
         else ans += min(nt-x,x-pr);
         insert(rt,x);
     }
