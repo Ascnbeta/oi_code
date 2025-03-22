@@ -100,5 +100,6 @@
     "workbench.colorCustomizations": {
 
     },
-    "workbench.colorTheme": "Default Dark+ Experimental"
+    "files.autoSave": "afterDelay",
+    "C_Cpp.codeAnalysis.runAutomatically": true
 }
