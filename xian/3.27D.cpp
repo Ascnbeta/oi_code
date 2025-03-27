@@ -98,6 +98,8 @@ signed main() {
     freopen("E:/codes/exe/a.in","r",stdin);
     freopen("E:/codes/exe/a.out","w",stdout);
 #endif
+    ios::sync_with_stdio(0);
+    cin.tie(0),cout.tie(0);
     cin >> n >> a >> cf >> cm >> m;
     int cnt = 0;
     for (int i = 1; i <= n; i++) {
