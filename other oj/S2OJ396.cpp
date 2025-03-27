@@ -4,8 +4,8 @@ const int mod = 1e9+7;
 const int maxn = 3e6+30;
 int n,m;
 long long ans;
-int val[maxn<<1],ls[maxn<<1],rs[maxn<<1],tot,rt;
-
+int tot,rt;
+vector<int> val(maxn<<1),ls(maxn<<1),rs(maxn<<1);
 inline void build(int &p,int l,int r) {
     if (!p) p = ++tot;
     if (l == r) {
