@@ -7,7 +7,7 @@ const int maxn = 1e5+30;
 int n,Q,s;
 struct edge{
     int to,nxt,w;
-}e[2500003];
+}e[2500003];//开够边
 int head[maxn<<4],tot;
 inline void add(int u,int v,int w) {
     e[++tot].to = v;
@@ -24,18 +24,18 @@ inline void build(int p,int l,int r) {
     build(rs,mid+1,r);
     add(p,ls,0);
     add(p,rs,0);
-    add(ls+(n<<2),p+(n<<2),0);
+    add(ls+(n<<2),p+(n<<2),0);//第二棵树的节点编号要加上4倍的n，以避让第一棵树。
     add(rs+(n<<2),p+(n<<2),0);
 }
-inline int query(int p,int pos,int l,int r) {
+inline int query(int p,int pos,int l,int r) {//查询节点编号
     if (l == r) return p;
     int mid = (l + r) >> 1;
     if (pos <= mid) return query(ls,pos,l,mid);
-    else return query(rs,pos,mid+1,r);
+    else return query(rs,pos,mid+1,r);//因为两棵树形态一样我们可以共用函数，只是注意如果查的是第二棵树的，别忘了在返回值上加n<<2
 }
 inline void adda(int p,int k,int w,int s,int e,int l,int r) {
     if (s <= l && r <= e) {
-        add(k,p,w);
+        add(k,p,w);//被连边
         return;
     }
     int mid = (l + r) >> 1;
@@ -45,7 +45,7 @@ inline void adda(int p,int k,int w,int s,int e,int l,int r) {
 }
 inline void addb(int p,int k,int w,int s,int e,int l,int r) {
     if (s <= l && r <= e) {
-        add(p+(n<<2),k,w);
+        add(p+(n<<2),k,w);//向别人连边
         return;
     }
     int mid = (l + r) >> 1;
@@ -71,9 +71,9 @@ inline void print(int p,int l,int r) {
     int mid = (l + r) >> 1;
     print(ls,l,mid);
     print(rs,mid+1,r);
-}
+}//输出最短路数据，因为叶子节点间有0边，所以只用输出一棵树的即可
 inline void dij(int s) {
-    for (int i = 1; i <= (n<<3); i++) dis[i] = LONG_LONG_MAX;
+    for (int i = 1; i <= (n<<3); i++) dis[i] = LONG_LONG_MAX;//注意最大值
     dis[s] = 0;
     q.push({s,0});
     while (!q.empty()) {
@@ -101,7 +101,7 @@ signed main() {
     build(1,1,n);
     for (int i = 1; i <= n; i++) {
         add(query(1,i,1,n),query(1,i,1,n)+(n<<2),0);
-        add(query(1,i,1,n)+(n<<2),query(1,i,1,n),0);
+        add(query(1,i,1,n)+(n<<2),query(1,i,1,n),0);//第二棵树上的返回值要加n<<2
     }
     // cout << query(1,1,1,3) << '\n';
     // dij(1);
