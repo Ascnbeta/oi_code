@@ -54,7 +54,7 @@
             "preLaunchTask": "cppbuilds-laptop"
         },
         {
-            "name": "C/C++: g++.exe 生成和调试活动文件（ernan）",
+            "name": "C/C++: g++.exe 生成和调试活动文件（二南）",
             "type": "cppdbg",
             "request": "launch",
             "program": "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
