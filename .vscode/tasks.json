@@ -27,13 +27,14 @@
         {
             "type": "cppbuild",
             "label": "cppbuilds-ernan",
-            "command": "C:\\Program Files (x86)\\Dev-Cpp\\MinGW64\\bin\\g++.exe",
+            "command": "D:\\mingw64\\mingw64\\bin\\g++.exe",
             "args": [
+                "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}\\${fileBasename}",
                 "-o",
                 "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
-                "-std=c++11",
+                "-std=c++14",
                 "-Wall",
                 "-Wextra",
                 "-Wl,-stack=12345678",
