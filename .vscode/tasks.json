@@ -26,6 +26,29 @@
         },
         {
             "type": "cppbuild",
+            "label": "cppbuilds-ernan",
+            "command": "C:\\Program Files (x86)\\Dev-Cpp\\MinGW64\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${fileDirname}\\${fileBasename}",
+                "-o",
+                "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
+                "-std=c++11",
+                "-Wall",
+                "-Wextra",
+                "-Wl,-stack=12345678",
+                "-DLOCAL"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "调试器生成的任务。"
+        },
+        {
+            "type": "cppbuild",
             "label": "cppbuilds-laptop",
             "command": "E:\\MinGW-w64\\mingw64\\bin\\g++.exe",
             "args": [
