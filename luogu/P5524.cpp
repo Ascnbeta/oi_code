@@ -52,6 +52,7 @@ inline void modify(int p,int s,int e,int v,int t,int l,int r) {
     if (e > mid) modify(rs,s,e,v,t,mid+1,r);
 }
 inline pair<int,int> query(int p,int pos,int l,int r) {
+    if (val[p]) return val[p];
     if (l == r) {
         return {val[p],tim[p]};
     }
