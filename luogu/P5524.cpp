@@ -35,7 +35,7 @@ inline void read(long long &a) {
 inline void pushdown(int p) {
     tim[ls] = tim[rs] = tagt[p];
     tagt[ls] = tagt[rs] = tagt[p];
-    tagt[p] = 0;
+    tagt[p] = 0,val[p] = 0;
     val[ls] = val[rs] = tagx[p];
     tagx[ls] = tagx[rs] = tagx[p];
     tagx[p] = 0;
