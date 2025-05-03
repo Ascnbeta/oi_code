@@ -4,6 +4,8 @@ using namespace std;
 const int maxn = 1e6+30;
 int q,cur,tot;
 vector<int> a;
+stack<int> s1,s2;
+int sum[maxn],ans[maxn];
 signed main () {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
@@ -12,35 +14,33 @@ signed main () {
     ios::sync_with_stdio(0);
     cin.tie(0),cout.tie(0);
     cin >> q;
+    ans[0] = LONG_LONG_MIN;
     for (int i = 1; i <= q; i++) {
-        char op;int x;
+        char op;
         cin >> op;
         if (op == 'I') {
-            cin >> x;
-            if (cur == tot) a.push_back(x);
-            else a.insert(a.begin()+cur,x);
-            ++cur,++tot;
-        }else if(op == 'D') {
-            a.erase(a.begin()+cur-1);
-            --cur,--tot;
-        }else if(op == 'L') {
-            if (cur > 0) cur--;
-        }else if(op == 'R') {
-            if (cur < tot) ++cur;
-        }else if(op == 'Q') {
-            cin >> x;
-            int sum = 0,ans = LONG_LONG_MIN;
-            for (int i = 0; i <= x-1; i++) {
-                sum += a[i];
-                ans = max(ans,sum);
-            }
-            cout << ans << '\n';
+            int val;
+            cin >> val;
+            s1.push(val);
+            sum[s1.size()] = sum[s1.size()-1] + val;
+            ans[s1.size()] = max(ans[s1.size()-1],sum[s1.size()]);
+        }else if (op == 'D') {
+            s1.pop();
+        }else if (op == 'L') {
+            if (s1.empty()) continue;
+            s2.push(s1.top());
+            s1.pop();
+        }else if (op == 'R') {
+            if (s2.empty()) continue;
+            s1.push(s2.top());
+            s2.pop();
+            sum[s1.size()] = sum[s1.size()-1] + s1.top();
+            ans[s1.size()] = max(ans[s1.size()-1],sum[s1.size()]);
+        }else {
+            int k;
+            cin >> k;
+            cout << ans[k] << '\n';
         }
-        // for (auto v : a) {
-        //     cout << v << ' ';
-        // }
-        // cout << '\n';
-        // cout << cur << '\n';
     }
     return 0;
 }

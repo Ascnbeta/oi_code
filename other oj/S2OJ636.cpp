@@ -4,26 +4,16 @@ using namespace std;
 const int maxn = 1e5+20;
 int n,m,k;
 struct obj{
-    int id,p,f;
-    bool operator < (const obj &y) const{
-        return p < y.p;
-    }
+    int p,q;
 }a[maxn];
-bool f[maxn];
-inline bool check(int x) {
-    for (int i = 1; i <= n; i++) f[i] = false;
-    int cnt = 0,tot = 0,cst = 0;
-    for (int i = 1; i <= 2*n; i++) {
-        if (f[a[i].id]) continue;
-        if (a[i].f && cnt == k) continue;
-        ++tot,cst += a[i].p;
-        if (a[i].f) cnt++;
-        f[a[i].id] = true;
-        if (tot == x || cst > m) break;
-    }
-    if (tot == x && cst <= m) return true;
-    else return false;
+int sum = 0;
+bool cmp1(const obj &x,const obj &y) {
+    return x.q < y.q;
 }
+bool cmp2(const obj &x,const obj &y) {
+    return x.p < y.p;
+}
+priority_queue<int,vector<int>,greater<int>> q;
 signed main () {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
@@ -31,25 +21,36 @@ signed main () {
 #endif
     cin >> n >> k >> m;
     for (int i = 1; i <= n; i++) {
-        cin >> a[i].p >> a[i+n].p;
-        a[i].id = a[i+n].id = i;
-        a[i+n].f = 1;
+        cin >> a[i].p >> a[i].q;
     }
-    sort(a+1,a+2*n+1);
-    // for (int i = 1; i <= n; i++) cout << a[i].p << ' ';
-    // cout << '\n';
-    int l = 1,r = n,ans = 0;
-    while (l <= r) {
-        int mid = (l + r) >> 1;
-        // cout << mid << '\n';
-        if (check(mid)) {
-            l = mid + 1;
-            ans = mid;
-        }else{
-            r = mid - 1;
+    sort(a+1,a+n+1,cmp1);
+    int cnt = 0;
+    for (int i = 1; i <= k; i++) {
+        sum += a[i].q;
+        q.push(a[i].p-a[i].q);
+        ++cnt;
+        if (sum > m) {
+            cout << cnt-1 << '\n';
+            return 0;
         }
     }
-    cout << ans << '\n';
+    if (k == n)
+    sort(a+k+1,a+n+1,cmp2);
+    for (int i = k+1; i <= n; i++) {
+        int tmp = q.top();
+        if (a[i].q + tmp < a[i].p) {
+            q.pop();
+            q.push(a[i].p-a[i].q);
+            sum += a[i].q + tmp;
+            ++cnt;
+        }else{
+            sum += a[i].p;
+            ++cnt;
+        }
+        if (sum > m) {
+            cout << cnt-1 << '\n';
+        }
+    }
     return 0;
 }
 /*
