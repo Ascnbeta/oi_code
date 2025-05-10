@@ -2,10 +2,16 @@
 #define int long long
 using namespace std;
 const int maxn = 354;
-int h,w,seed,thd,tmp;
+int h,w,seed,thd,tmp,ans;
 int mp[maxn][maxn];
 int suml[maxn][maxn],sumr[maxn][maxn];
+bool f[maxn];
+vector<int> v;
 signed main () {
+    #ifdef LOCAL
+        freopen("D:/codes/exe/a.in","r",stdin);
+        freopen("D:/codes/exe/a.out","w",stdout);
+    #endif
     cin >> h >> w >> seed >> thd;
     tmp = seed;
     for (int i = 1; i <= h; i++) {
@@ -15,14 +21,27 @@ signed main () {
             else mp[i][j] = 1;
         }
     }
-    for (int i = 1; i <= h; i++) {
-        for (int j = 1; j <= w; j++) suml[i][j] = suml[i][j-1] + mp[i][j];
-    }
     for (int j = 1; j <= w; j++) {
         for (int i = 1; i <= h; i++) sumr[i][j] = sumr[i-1][j] + mp[i][j];
     }
     for (int i = 1; i <= h; i++) {
-        
+        for (int j = i+2; j <= h; j++) {
+            int cnt = 0;
+            memset(f,0,sizeof(f));
+            for (int k = 1; k <= w; k++) {
+                if (mp[i][k] == mp[j][k] && mp[i][k] == 1) {
+                    if (sumr[j][k]-sumr[i-1][k] == j-i+1) {
+                        f[k] = true;
+                        ans += cnt;
+                        if (f[k-1]) --ans;
+                        ++cnt;
+                    }
+                }else{
+                    cnt = 0;
+                }
+            }
+        }
     }
+    cout << ans << '\n';
     return 0;
 }

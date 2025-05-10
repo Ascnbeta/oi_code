@@ -3,33 +3,32 @@
 using namespace std;
 int n,m,k,cnt;
 char s[203];
-int c[202][102];bool f[202][102];
-void dfs(int a,int b) {
-    if (a > n+m || b > n) return;
-    f[a][b] = true;
-    if (!f[a+1][b]) c[a+1][b] = c[a][b] * (a+1) / (a-b+1) ,dfs(a+1,b);
-    if (b < a && !f[a][b+1]) c[a][b+1] = c[a][b] * (a-b) / (b+1),dfs(a,b+1);
-} 
+int f[203][103];
 signed main () {
+    #ifdef LOCAL
+        freopen("D:/codes/exe/a.in","r",stdin);
+        freopen("D:/codes/exe/a.out","w",stdout);
+    #endif
     cin >> n >> m >> k;
-    for (int i = 1; i <= n; i++) s[i] = 'a';
-    for (int i = n+1; i <= n+m; i++) s[i] = 'z';
-    c[1][1] = 1;
-    dfs(1,1);
-    int cnt = n;
-    c[0][0] = 1;
-    for (int i = 1; i <= n+m; i++) c[i][0] = 1,c[0][i] = 1;
-    if (c[n+m][n] <= k) {
-        cout << '\n';
+    f[0][0] = 1;
+    for (int i = 1; i <= n+m; i++) {
+        f[i][0] = f[i-1][0];
+        for (int j = 0; j <= n; j++) {
+            f[i][j] = min(f[i-1][j]+f[i-1][j-1],k+1);
+        }
+    }
+    if (f[n+m][n] < k) {
+        puts("");
         return 0;
     }
+    cnt = n;
     for (int i = 1; i <= n+m; i++) {
-        if ( cnt > 0 && c[n+m-i][cnt-1] > 0 && c[n+m-i][cnt-1] >= k) {
+        if (cnt > 0 && f[n+m-i][cnt-1] >= k) {
             s[i] = 'a';
             --cnt;
         }else{
             s[i] = 'z';
-            k -= c[n+m-i][cnt-1];
+            k -= f[n+m-i][cnt-1];
         }
     }
     for (int i = 1; i <= n+m; i++) {
