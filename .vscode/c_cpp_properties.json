@@ -12,7 +12,7 @@
             ],
             "compilerPath": "D:\\toolchains\\mingw-w64\\bin\\gcc.exe",
             "cStandard": "c17",
-            "cppStandard": "gnu++17",
+            "cppStandard": "c++14",
             "intelliSenseMode": "windows-gcc-x64"
         }
     ],
