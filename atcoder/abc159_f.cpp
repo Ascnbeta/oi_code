@@ -11,18 +11,14 @@ int main() {
     freopen("D:/codes/exe/a.out","w",stdout);
 #endif
     cin >> n >> s;
-    for (int i = 1; i <= n; i++) cin >> a[i],f[i][0] = 1;
-    f[0][0] = 1;
+    for (int i = 1; i <= n; i++) cin >> a[i];
     for (int i = 1; i <= n; i++) {
+        f[i-1][0]++;
         for (int j = 0; j <= s; j++) {
             if (j >= a[i])  f[i][j] = (f[i-1][j]+f[i-1][j-a[i]])%mod;
             else f[i][j] = f[i-1][j];
         }
-    }
-    for (int i = 1; i <= n; i++) {
-        for (int j = i; j <= n; j++) {
-            if (s >= a[j]) ans = (((ans+f[j][s])%mod-f[i-1][s]+mod)%mod-f[i-1][s-a[j]]+mod)%mod;
-        }
+        ans = (ans+f[i][s])%mod;
     }
     cout << ans << '\n';
     return 0;
