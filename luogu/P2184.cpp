@@ -1,75 +1,57 @@
 #include <bits/stdc++.h>
+#define ls p<<1
+#define rs p<<1|1
 using namespace std;
-int n,m,tot,tot1 = -0x3f3f3f3f;
-struct zone{
-	int l,r,v,tp,p,ans;
-}z[200005];
-bool cmp1(zone x,zone y) {
-	if (x.v == y.v) {
-		return x.tp < y.tp;
-	}
-	return x.v < y.v;
-}
-bool cmp2(zone x,zone y) {
-	return x.p < y.p;
-}
-int t[100004];
-inline int lowbit(int x) {
-	return x&(-x);
-}
-inline void modify(int p,int x) {
+const int maxn = 1e5+30;
+int n,m;
+int t1[maxn],t2[maxn];
+inline int lowbit(int x) {return x&(-x);}
+inline void modify1(int p,int x) {
 	while (p <= n) {
-		t[p] += x;
+		t1[p] += 1;
 		p += lowbit(p);
 	}
 }
-inline int query(int p) {
+inline void modify2(int p,int x) {
+	while (p <= n) {
+		t2[p] += 1;
+		p += lowbit(p);
+	}
+}
+inline int query1(int p) {
 	int ret = 0;
 	while (p > 0) {
-		ret += t[p];
+		ret += t1[p];
 		p -= lowbit(p);
 	}
-	return p;
+	return ret;
 }
-int main () {
+inline int query2(int p) {
+	int ret = 0;
+	while (p > 0) {
+		ret += t2[p];
+		p -= lowbit(p);
+	}
+	return ret;
+}
+int main() {
+#ifdef LOCAL
+	freopen("D:/codes/exe/a.in","r",stdin);
+	freopen("D:/codes/exe/a.out","w",stdout);
+#endif
+	ios::sync_with_stdio(0);
+	cin.tie(0),cout.tie(0);
 	cin >> n >> m;
-	while (m--) {
-		int op,l,r;
-		cin >> op >> l >> r;
-		if (op == 1) {
-			z[++tot].tp = 1;
-			z[tot].l = l;
-			z[tot].r = r;
-			z[tot].v = l;
-			z[++tot].tp = 2;
-			z[tot].l = l;
-			z[tot].r = r;
-			z[tot].v = r;
+	for (int i = 1; i <= m; i++) {
+		int q,l,r;
+		cin >> q >> l >> r;
+		if (q == 1) {
+			modify1(l,1);
+			modify2(r,1);
 		}else{
-			z[++tot].tp = 3;
-			z[tot].l = l;
-			z[tot].r = r;
-			z[tot].v = r;
-			z[tot].p = ++tot1;
+			cout << query1(r) - query2(l-1) << '\n';
 		}
+		
 	}
-	sort(z+1,z+tot+1,cmp1);
-	for (int i = 1; i <= tot; i++) {
-		if (z[i].tp == 1) {
-			modify(z[i].l,1);
-		}
-		// if (z[i].tp == 2) {
-		// 	modify(z[i].l,-1);
-		// }
-		if (z[i].tp == 3) {
-			z[i].ans = query(z[i].r)-query(z[i].l-1);
-		}
-	}
-	sort(z+1,z+tot+1,cmp2);
-	for (int i = 1; i <= tot; i++) {
-		if (z[i].tp == 3) {
-			cout << z[i].ans << '\n';
-		}
-	} 
 	return 0;
-}
+}	

@@ -1,44 +1,33 @@
 #include <bits/stdc++.h>
-#define int long long
 using namespace std;
 const int maxn = 5e5+30;
-int n,ans,maxx = 0;
-int a[maxn],b[maxn];
-vector<int> v[maxn],sum1[maxn],sum2[maxn];
-signed main() {
+int n,a[maxn],b[maxn];
+int cnta[maxn],cntb[maxn];
+long long ans;
+int main() {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
     freopen("D:/codes/exe/a.out","w",stdout);
 #endif
+    ios::sync_with_stdio(0);
+    cin.tie(0),cout.tie(0);
     cin >> n;
     for (int i = 1; i <= n; i++) cin >> a[i];
+    for (int i = 1; i <= n; i++) cin >> b[i];
+    int l = n/2+1,r=n/2;
     for (int i = 1; i <= n; i++) {
-        cin >> b[i];
-        v[b[i]].push_back(i);
-        maxx = max(maxx,b[i]);
-    }
-    for (int i = 1; i <= maxx; i++) {
-        if (v[i].size() == 0) continue;
-        for (int j = 0; j < v[i].size(); j++) {
-            if (j != 0) sum1[i].push_back(sum1[i][j-1]+v[i][j]);
-            else sum1[i].push_back(v[i][j]);
-        }
-        for (int j = v[i].size() - 1; j >= 0; j--) {
-            if (j != v[i].size() - 1) sum2[i].push_back(sum2[i][j+1]+(n-v[i][j]+1));
-            else sum2[i].push_back(n-v[i][j]+1);
+        if (a[i] == b[i]) {
+            ans += (long long)(i-1)*i/2+(long long)(n-i+1)*(n-i)/2;
+            ans += min(i,n-i+1);
         }
     }
-    for (int i = 1; i <= n; i++) {
-        if (v[a[i]].size() == 0) continue;
-        int pos = upper_bound(v[a[i]].begin(),v[a[i]].end(),i)-v[a[i]].begin()-1;
-        int pos2 = lower_bound(v[a[i]].begin(),v[a[i]].end(),n+1-i)-v[a[i]].begin();
-        if (v[a[i]][pos] == i) {
-            ans += i*(i-1)/2 + (n-v[a[i]][pos]+1)*(n-v[a[i]][pos])/2;
-        }
-        if (pos < pos2) ans += sum1[a[i]][pos] + sum2[a[i]][pos2] + (pos2-pos)*i;
-        else if (pos > pos2) ans += sum1[pos2] + sum2[pos] + (pos-pos2)*(n-i+1);
-        else ans += sum1[pos] + sum2[pos2] - i;
-        // cout << ans << '\n';
+    for (int i = 1; i <= (n+1)/2; i++) {
+        if (++r > n) break;
+        ans += (long long)(cntb[a[r]]+cnta[b[r]])*(n-r+1);
+        ++cnta[a[r]],++cntb[b[r]];
+        if (--l > n) break;
+        ans += (long long)(cntb[a[l]]+cnta[b[l]])*l;
+        ++cnta[a[l]],++cntb[b[l]];
     }
     cout << ans << '\n';
     return 0;
