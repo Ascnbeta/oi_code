@@ -31,7 +31,7 @@
             "name": "C/C++: g++.exe 生成和调试活动文件（Laptop）",
             "type": "cppdbg",
             "request": "launch",
-            "program": "E:\\codes\\exe\\${fileBasenameNoExtension}.exe",
+            "program": "E:\\OI\\exe\\${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
