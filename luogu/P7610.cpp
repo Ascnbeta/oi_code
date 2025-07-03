@@ -2,17 +2,18 @@
 #include <cstdio>
 #include <queue>
 #include <assert.h>
+#define int long long
 using namespace std;
 struct role{
     int maxhp,hp;
     int maxmp,mp;
     int atk,deltaatk;
     int def,deltadef;
-    int talent,tval[3];
-    int skill,sval[4];
+    int talent,tval[5];
+    int skill,sval[5];
     int p[12];
     bool live;
-    void init() {hp=maxhp,mp=maxmp,deltaatk=0,deltadef=0,live=true;}
+    void init() {hp=maxhp,mp=0,deltaatk=0,deltadef=0,live=true;}
     void addmp(int val) {mp+=val,mp=min(mp,maxmp);}
     void addhp(int val) {hp+=val,hp=min(hp,maxhp);}
 }r[2][12];//0->Alice 1->Bob
@@ -36,7 +37,8 @@ int calcdamage(int per,int bel,int val,int true_val);
 void judgewin();
 int choose_target(int per,int bel);
 void total();
-int main() {
+void print();
+signed main() {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
     freopen("D:/codes/exe/a.out","w",stdout);
@@ -59,13 +61,13 @@ int main() {
     play(1);
     return 0;
 }
-#define A max(r[bel][per].atk+r[bel][per].deltaatk,1)
-#define D max(r[bel][per].def+r[bel][per].deltadef,0)
+#define A max(r[bel][per].atk+r[bel][per].deltaatk,1ll)
+#define D max(r[bel][per].def+r[bel][per].deltadef,0ll)
 void play(int c) {
     ++tim;
     if (c > 23333) {
         cerr << "fatal error: 02" << '\n';
-        assert(0);
+        exit(0);
         return;
     }
     //Alice
@@ -77,6 +79,7 @@ void play(int c) {
         }
     }
     if (tg) {
+        // printf("Alice %d used skill %d.\n",tg,r[0][tg].skill);
         r[0][tg].mp = 0;
         skill(r[0][tg].skill,tg,0);
         if (r[0][tg].talent == 5) {
@@ -84,6 +87,7 @@ void play(int c) {
         }else{
             r[0][tg].addmp(1);
         }
+
     }else{
         int hp = 0,dam = 0;
         for (int i = n; i >= 1; i--) {
@@ -93,39 +97,39 @@ void play(int c) {
                     tg = i,hp = r[1][tgt].hp;
                     int tmp = 0;
                     if (r[0][i].talent == 2) {
-                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1),r[0][i].tval[1]);
+                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1ll),r[0][i].tval[1]);
                     }else if(r[0][i].talent == 4) {
-                        tmp = calcdamage(tgt,1,0,max(r[0][i].atk+r[0][i].deltaatk,1));
+                        tmp = calcdamage(tgt,1,0,max(r[0][i].atk+r[0][i].deltaatk,1ll));
                     }else{
-                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1),0);
+                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1ll),0);
                     }
                     dam = tmp;
                 }else if(r[1][tgt].hp == hp) {
                     int tmp = 0;
                     if (r[0][i].talent == 2) {
-                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1),r[0][i].tval[1]);
+                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1ll),r[0][i].tval[1]);
                     }else if(r[0][i].talent == 4) {
-                        tmp = calcdamage(tgt,1,0,max(r[0][i].atk+r[0][i].deltaatk,1));
+                        tmp = calcdamage(tgt,1,0,max(r[0][i].atk+r[0][i].deltaatk,1ll));
                     }else{
-                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1),0);
+                        tmp = calcdamage(tgt,1,max(r[0][i].atk+r[0][i].deltaatk,1ll),0);
                     }
-                    if (tmp > dam) tg = i;
+                    if (tmp > dam) tg = i,dam = tmp;
                 }
             }
         }
         int tgt = choose_target(tg,0);
+        // printf("Alice %d attacked %d.\n",tg,tgt);
         if (r[0][tg].talent == 2) {
-            damage(tgt,1,max(r[0][tg].atk+r[0][tg].deltaatk,1),r[0][tg].tval[1]);
+            damage(tgt,1,max(r[0][tg].atk+r[0][tg].deltaatk,1ll),r[0][tg].tval[1]);
         }else if(r[0][tg].talent == 4) {
-            damage(tgt,1,0,max(r[0][tg].atk+r[0][tg].deltaatk,1));
+            damage(tgt,1,0,max(r[0][tg].atk+r[0][tg].deltaatk,1ll));
         }else{
-            damage(tgt,1,max(r[0][tg].atk+r[0][tg].deltaatk,1),0);
+            damage(tgt,1,max(r[0][tg].atk+r[0][tg].deltaatk,1ll),0);
         }
         if (r[0][tg].talent == 5) {
-            r[0][tg].addmp(r[0][tg].tval[1]);
-        }else{
-            r[0][tg].addmp(1);
+            r[0][tg].addhp(r[0][tg].tval[1]);
         }
+        r[0][tg].addmp(1);
     }
     int pls = 1,len = s4[0].size(),t = 0;
     while (!s4[0].empty()) {
@@ -136,12 +140,15 @@ void play(int c) {
         if (tmp.first != tim) s4[0].push(tmp);
         if (t == len) break;
     }
+    if (s10[0]) pls++;
     for (int i = 1; i <= n; i++) {
         if (r[0][i].live) {
             r[0][i].addmp(pls);
             if (r[0][i].talent == 3) r[0][i].addhp(r[0][i].tval[1]),r[0][i].addmp(r[0][i].tval[2]);
         }
     }
+    // puts("Alice's round over.");
+    // print();
     //Bob
     tg = 0;
     for (int i = n; i >= 1; i--) {
@@ -152,12 +159,14 @@ void play(int c) {
     }
     if (tg) {
         r[1][tg].mp = 0;
+        // printf("Bob %d used skill %d.\n",tg,r[1][tg].skill);
         skill(r[1][tg].skill,tg,1);
         if (r[1][tg].talent == 5) {
             r[1][tg].addmp(r[1][tg].tval[2]+1);
         }else{
             r[1][tg].addmp(1);
         }
+
     }else{
         int hp = 0,dam = 0;
         for (int i = n; i >= 1; i--) {
@@ -167,39 +176,40 @@ void play(int c) {
                     tg = i,hp = r[0][tgt].hp;
                     int tmp = 0;
                     if (r[1][i].talent == 2) {
-                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1),r[1][i].tval[1]);
+                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1ll),r[1][i].tval[1]);
                     }else if(r[1][i].talent == 4) {
-                        tmp = calcdamage(tgt,0,0,max(r[1][i].atk+r[1][i].deltaatk,1));
+                        tmp = calcdamage(tgt,0,0,max(r[1][i].atk+r[1][i].deltaatk,1ll));
                     }else{
-                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1),0);
+                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1ll),0);
                     }
                     dam = tmp;
                 }else if(r[0][tgt].hp == hp) {
                     int tmp = 0;
                     if (r[1][i].talent == 2) {
-                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1),r[1][i].tval[1]);
+                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1ll),r[1][i].tval[1]);
                     }else if(r[1][i].talent == 4) {
-                        tmp = calcdamage(tgt,0,0,max(r[1][i].atk+r[1][i].deltaatk,1));
+                        tmp = calcdamage(tgt,0,0,max(r[1][i].atk+r[1][i].deltaatk,1ll));
                     }else{
-                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1),0);
+                        tmp = calcdamage(tgt,0,max(r[1][i].atk+r[1][i].deltaatk,1ll),0);
                     }
-                    if (tmp > dam) tg = i;
+                    if (tmp > dam) tg = i,dam = tmp;
                 }
             }
         }
+        
         int tgt = choose_target(tg,1);
+        // printf("Bob %d attacked %d.\n",tg,tgt);
         if (r[1][tg].talent == 2) {
-            damage(tgt,0,max(r[1][tg].atk+r[1][tg].deltaatk,1),r[1][tg].tval[1]);
+            damage(tgt,0,max(r[1][tg].atk+r[1][tg].deltaatk,1ll),r[1][tg].tval[1]);
         }else if(r[1][tg].talent == 4) {
-            damage(tgt,0,0,max(r[1][tg].atk+r[1][tg].deltaatk,1));
+            damage(tgt,0,0,max(r[1][tg].atk+r[1][tg].deltaatk,1ll));
         }else{
-            damage(tgt,0,max(r[1][tg].atk+r[1][tg].deltaatk,1),0);
+            damage(tgt,0,max(r[1][tg].atk+r[1][tg].deltaatk,1ll),0);
         }
         if (r[1][tg].talent == 5) {
-            r[1][tg].addmp(r[1][tg].tval[1]);
-        }else{
-            r[1][tg].addmp(1);
+            r[1][tg].addhp(r[1][tg].tval[1]);
         }
+        r[1][tg].addmp(1);
     }
     pls = 1,len = s4[1].size(),t = 0;
     while (!s4[1].empty()) {
@@ -210,13 +220,18 @@ void play(int c) {
         if (tmp.first != tim) s4[1].push(tmp);
         if (t == len) break;
     }
+    if (s10[1]) pls++;
     for (int i = 1; i <= n; i++) {
         if (r[1][i].live) {
             r[1][i].addmp(pls);
             if (r[1][i].talent == 3) r[1][i].addhp(r[1][i].tval[1]),r[1][i].addmp(r[1][i].tval[2]);
         }
     }
+    // puts("Bob's round over.");
+    // print();
     total();
+    // printf("Round %d is over.\n",tim);
+    // print();
     play(c+1);
 }
 void skill(int num,int per,int bel)  {
@@ -239,7 +254,7 @@ void skill(int num,int per,int bel)  {
     }else if(num == 3) {
         for (int i = 1; i <= n; i++) {
             if (r[atk][i].live) {
-                damage(i,atk,min(r[atk][i].hp/10,r[bel][per].sval[1]*A),0);
+                damage(i,atk,min(r[atk][i].maxhp/10,r[bel][per].sval[1]*A),0);
             }
         }
     }else if(num == 4) {
@@ -309,21 +324,24 @@ void skill(int num,int per,int bel)  {
     }
 }
 void damage(int per,int bel,int val,int true_val) {//val->伤害，true_val->真实伤害
-    r[bel][per].hp -= max(val-D,0)+true_val-(r[bel][per].talent==1)*(true_val/2);
+    int hp_backup = r[bel][per].hp;
+    r[bel][per].hp -= max(val-D,0ll)+true_val-(r[bel][per].talent==1?1:0)*(true_val/2);
+    // if (bel == 0) printf("Alice %d get %d damage\n",per,hp_backup-r[bel][per].hp);
+    // else printf("Bob %d get %d damage\n",per,hp_backup-r[bel][per].hp);
     if (r[bel][per].hp <= 0) {
         r[bel][per].hp = 0;
         r[bel][per].live = false;
         --cnt[bel];
+        // if (bel == 0) printf("Alice %d died.\n",per);
+        // else printf("Bob %d died.\n",per);
         judgewin();
         return;
     }
     r[bel][per].addmp(1);
 }
 int calcdamage(int per,int bel,int val,int true_val) {//val->伤害，true_val->真实伤害
-    int hp = r[bel][per].hp;int hp1 = hp;
-    hp1 -= max(val-D,0)+true_val-(r[bel][per].talent==1)*(true_val/2);
-    hp1 = max(0,hp1);
-    return hp-hp1;
+    // hp1 = max(0,hp1);
+    return max(val-D,0ll)+true_val-(r[bel][per].talent==1)*(true_val/2);
 }
 void judgewin() {
     if (cnt[0] == 0) {
@@ -402,7 +420,7 @@ void total() {
             }
         }
     }
-    while (!s6[1].empty()&&s6[0].front().first==tim) {
+    while (!s6[1].empty()&&s6[1].front().first==tim) {
         auto tmp = s6[1].front();
         s6[1].pop();
         for (int i = 1; i <= n; i++) {
@@ -438,4 +456,8 @@ void total() {
             }
         }
     }
+}
+void print() {
+    for (int i = 1; i <= n; i++) printf("Alice: %d hp=%d mp=%d\n",i,r[0][i].hp,r[0][i].mp);
+    for (int i = 1; i <= n; i++) printf("Bob: %d hp=%d mp=%d\n",i,r[1][i].hp,r[1][i].mp);
 }
