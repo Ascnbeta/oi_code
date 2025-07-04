@@ -21,6 +21,7 @@ inline int find(int x) {
 }
 int n,m,k;
 int cnt = 0;
+bool f[maxm];
 int main() {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
@@ -30,9 +31,14 @@ int main() {
     cin.tie(0),cout.tie(0);
     cin >> n >> m >> k;
     for (int i = 1; i <= n; i++) father[i] = i;
-    for (int i = 1; i <= m; i++) cin >> e[i].u >> e[i].v >> e[i].w;
-    sort(e+1,e+m+1,greater<edge>());
-    for (int i = 1; i <= m; i++) {
+    for (int i = 1; i <= m; i++) cin >> e[i].u >> e[i].v >> e[i].w,cnt += e[i].w^1;
+    if (cnt < k) {
+        cout <<"no solution" << '\n';
+        return 0;
+    }
+    cnt = 0;
+    sort(e+1,e+m+1);
+    for (int i = m; i >= 1; i--) {
         int p = find(e[i].u),q = find(e[i].v);
         if (p != q) {
             e[i].chs = 1;
@@ -44,14 +50,16 @@ int main() {
         cout << "no solution" << '\n';
         return 0;
     }
-    for (int i = 1; i <= m; i++) if (e[i].w == 1) e[i].chs = 0;
+    for (int i = 1; i <= m; i++) {
+        if (e[i].w == 0 && e[i].chs == 1) f[i] = true;
+        e[i].chs = 0;
+    }
     for (int i = 1; i <= n; i++) father[i] = i;
-    sort(e+1,e+m+1);
     cnt = 0;
     for (int i = 1; i <= m; i++) {
         int p = find(e[i].u),q = find(e[i].v);
         if (p != q) {
-            e[i].chs = 2;
+            e[i].chs = 1;
             father[p] = q;
             ++cnt;
         }
@@ -60,6 +68,37 @@ int main() {
         cout << "no solution" << '\n';
         return 0;
     }
-    for (int i = 1; i <= m; i++) if (e[i].w == 0 && e[i].chs == 2) e[i].chs = false;
+    for (int i = 1; i <= m; i++) if (e[i].w == 1 && e[i].chs == 1) f[i] = true;
+    for (int i = 1; i <= n; i++) father[i] = i;
+    cnt = 0;int cntk = 0;
+    for (int i = 1; i <= m; i++) {
+        int p = find(e[i].u),q = find(e[i].v);
+        if (f[i]) ++cnt,father[p] = q;
+        if (f[i]&&e[i].w == 0) ++cntk;
+    }
+    if (cnt > n-1) {
+        cout << "no solution" << '\n';
+        return 0;
+    }
+    for (int i = 1; i <= m; i++) {
+        int p = find(e[i].u),q = find(e[i].v);
+        if (cntk == k && e[i].w == 0) continue;
+        if (p != q) {
+            f[i] = true;
+            ++cnt;
+            if (e[i].w == 0) ++cntk;
+            father[p] = q;
+        }
+        if (cnt == n-1) break;
+    }
+    if (cntk < k) {
+        cout << "no solution" << '\n';
+        return 0;
+    }
+    for (int i = 1; i <= m; i++) {
+        if (f[i]) {
+            cout << e[i].u << ' ' << e[i].v << ' ' << e[i].w << '\n';
+        }
+    }
     return 0;
 }
