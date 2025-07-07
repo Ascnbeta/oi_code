@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+typedef long long ll;
 using namespace std;
 template <typename T>
 inline void read(T &x) {
@@ -20,9 +21,9 @@ inline void write (T x) {
     putchar('0'+x%10);
 }
 const int maxn = 5e4+5;
-const int B = 210;
-int n,a[maxn],bel[maxn],sum[610],tag[610];
-inline void add(int l,int r,int v) {
+const ll B = 210;
+int n;ll a[maxn],bel[maxn],sum[610],tag[610];
+inline void add(int l,int r,ll v) {
     int lpos = bel[l],rpos = bel[r];
     if (lpos == rpos) {
         for (int i = l; i <= r; i++) {
@@ -44,8 +45,26 @@ inline void add(int l,int r,int v) {
         }
     }
 }
-inline int query(int l,int r) {
-
+inline ll query(int l,int r,ll mod) {
+    ++mod;
+    int lpos = bel[l],rpos = bel[r];ll ret = 0;
+    if (lpos == rpos) {
+        for (int i = l; i <= r; i++) {
+            ret = (ret + a[i] + tag[lpos]) % mod;
+        }
+        return ret;
+    }else{
+        for (int i = lpos+1; i <= rpos-1; i++) {
+            ret = (ret + sum[i]) % mod;
+        }
+        for (int i = l; bel[i] == lpos; i++) {
+            ret = (ret + a[i] + tag[lpos]) % mod;
+        }
+        for (int i = r; bel[i] == rpos; i--) {
+            ret = (ret + a[i] + tag[rpos]) % mod;
+        }
+        return ret;
+    }
 }
 int main() {
 #ifdef LOCAL
@@ -61,8 +80,8 @@ int main() {
     for (int i = 1; i <= n; i++) {
         int op,l,r,c;
         read(op),read(l),read(r),read(c);
-        if (op == 1) add(l,r,c);
-        else write()
+        if (op == 0) add(l,r,c);
+        else write(query(l,r,c)),putchar('\n');
     }
     return 0;
 }
