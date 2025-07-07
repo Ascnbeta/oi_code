@@ -11,7 +11,7 @@
                 "-o",
                 "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
                 "-std=c++14",
-                "-O2",
+                // "-O2",
                 "-Wall",
                 "-Wextra",
                 "-Wl,-stack=536870912",
