@@ -85,7 +85,7 @@ int main() {
                 lst = pos;
                 int pre = i-lst6v3;//两个6中间有几个3,9
                 lst6v3 = i+1;
-                ans = ans * C(tmp-1+pre,pre) % mod;//式子不对
+                ans = ans * C(tmp-1+pre,pre) % mod;
             }
         }
          ans = ans * C(v2.size()-lst+v3.size()-lst6v3,v3.size()-lst6v3) % mod;

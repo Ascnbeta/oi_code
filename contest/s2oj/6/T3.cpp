@@ -58,7 +58,7 @@ inline pair<ll,int> query(int p,int s,int e,int l,int r) {
 int rt;
 const int inf = 1000000000;
 ll maxv = 0;
-// map<ll,ll> s;
+set<int> s;
 int main() {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
@@ -67,59 +67,33 @@ int main() {
     ios::sync_with_stdio(0),cin.tie(0),cout.tie(0);
     read(n),read(a),read(b);
     for (int i = 1; i <= n; i++) read(x[i]),maxv = max(maxv,x[i]);
-    if (n <= 1000) {
-        for (int i = 1; i <= n; i++) {
-            modify(rt,x[i],1,maxv);
-            ll ans = LONG_LONG_MAX;
-            for (int j = 1; j <= i; j++) {
-                pair<ll,int> ret1 = query(rt,1,x[j]-1,1,maxv);
-                pair<ll,int> ret2 = query(rt,x[j]+1,maxv,1,maxv);
-                ll tmp1 = (ret1.second*x[j]-ret1.first)*a;
-                ll tmp2 = (ret2.first-ret2.second*x[j])*b;
-                ans = min(ans,tmp1+tmp2);
+    // ll siz = 0;
+    ll maxx = 0,minn = LONG_LONG_MAX,ans = 0,r = 0;
+    for (int i = 1; i <= n; i++) {
+        maxx = max(maxx,x[i]);
+        minn = min(minn,x[i]);
+        modify(rt,x[i],1,maxv);
+        s.insert(x[i]);
+        if (s.size() == 1) r = *s.begin();
+        else {
+            auto it = s.lower_bound(r);
+            auto it1 = --it;
+            auto it2 = ++it;
+            if (it == s.begin()) {
+                r = *it2;
+                pair<ll,int> ret1 = query(rt,1,r-1,1,maxv);
+                pair<ll,int> ret2 = query(rt,r+1,maxv,1,maxv);
+                ll tmp1 = (ret1.second*r-ret1.first)*a;
+                ll tmp2 = (ret2.first-ret2.second*r)*b;
+                ans = tmp1+tmp2;
             }
-            write(ans),putchar('\n');
         }
-    }else{
-        // ll siz = 0;
-        ll maxx = 0,minn = LONG_LONG_MAX,ans = 0;
-        for (int i = 1; i <= n; i++) {
-            maxx = max(maxx,x[i]);
-            minn = min(minn,x[i]);
-            modify(rt,x[i],1,maxv);
-            // auto t = s.insert(x[i]);
-            // if (t.second) ++siz;
-            ll l = minn,r = maxx;
-            // if (x[i] > ans) l = ans;
-            // else r = ans;
-            while (l <= r) {
-                ll mid = (l+r) >> 1;
-                ll mid1 = max(l,mid-1),mid2 = min(r,mid+1);
-                // mid1 = (*(s.begin()+mid1-1)),mid2 = (*(s.begin()+mid2-1));
-                pair<ll,int> ret1 = query(rt,1,mid1-1,1,maxv);
-                pair<ll,int> ret2 = query(rt,mid1+1,maxv,1,maxv);
-                ll tmp1 = (ret1.second*mid1-ret1.first)*a;
-                ll tmp2 = (ret2.first-ret2.second*mid1)*b;
-                ll ans1 = tmp1+tmp2;
-                ret1 = query(rt,1,mid2-1,1,maxv);
-                ret2 = query(rt,mid2+1,maxv,1,maxv);
-                tmp1 = (ret1.second*mid2-ret1.first)*a;
-                tmp2 = (ret2.first-ret2.second*mid2)*b;
-                ll ans2 = tmp1+tmp2;
-                if (ans1 < ans2) {
-                    r = mid2-1;
-                }else{
-                    l = mid1+1;
-                }
-            }
-            // r = s[r];
-            pair<ll,int> ret1 = query(rt,1,r-1,1,maxv);
-            pair<ll,int> ret2 = query(rt,r+1,maxv,1,maxv);
-            ll tmp1 = (ret1.second*r-ret1.first)*a;
-            ll tmp2 = (ret2.first-ret2.second*r)*b;
-            ans = tmp1+tmp2;
-            write(ans),putchar('\n');
-        }
+        pair<ll,int> ret1 = query(rt,1,r-1,1,maxv);
+        pair<ll,int> ret2 = query(rt,r+1,maxv,1,maxv);
+        ll tmp1 = (ret1.second*r-ret1.first)*a;
+        ll tmp2 = (ret2.first-ret2.second*r)*b;
+        ans = tmp1+tmp2;
+        write(ans),putchar('\n');
     }
     // calc = clock()-calc;
     // write(calc);
