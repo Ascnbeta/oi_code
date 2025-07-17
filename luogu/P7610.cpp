@@ -80,7 +80,7 @@ void play(int c) {
     }
     if (tg) {
         // printf("Alice %d used skill %d.\n",tg,r[0][tg].skill);
-        r[0][tg].mp = 0;
+        if (r[0][tg].skill != 10) r[0][tg].mp = 0;
         skill(r[0][tg].skill,tg,0);
         if (r[0][tg].talent == 5) {
             r[0][tg].addmp(r[0][tg].tval[2]+1);
@@ -158,7 +158,7 @@ void play(int c) {
         }
     }
     if (tg) {
-        r[1][tg].mp = 0;
+        if (r[1][tg].skill != 10) r[1][tg].mp = 0;
         // printf("Bob %d used skill %d.\n",tg,r[1][tg].skill);
         skill(r[1][tg].skill,tg,1);
         if (r[1][tg].talent == 5) {
@@ -324,6 +324,8 @@ void skill(int num,int per,int bel)  {
     }
 }
 void damage(int per,int bel,int val,int true_val) {//val->伤害，true_val->真实伤害
+    if (!r[bel][per].live) return;
+    r[bel][per].addmp(1);
     int hp_backup = r[bel][per].hp;
     r[bel][per].hp -= max(val-D,0ll)+true_val-(r[bel][per].talent==1?1:0)*(true_val/2);
     // if (bel == 0) printf("Alice %d get %d damage\n",per,hp_backup-r[bel][per].hp);
@@ -337,10 +339,11 @@ void damage(int per,int bel,int val,int true_val) {//val->伤害，true_val->真
         judgewin();
         return;
     }
-    r[bel][per].addmp(1);
+
 }
 int calcdamage(int per,int bel,int val,int true_val) {//val->伤害，true_val->真实伤害
     // hp1 = max(0,hp1);
+    if (!r[bel][per].live) assert(0);
     return max(val-D,0ll)+true_val-(r[bel][per].talent==1)*(true_val/2);
 }
 void judgewin() {
@@ -363,7 +366,7 @@ void judgewin() {
 }
 int choose_target(int per,int bel)  {
     for (int i = 1; i <= n; i++) {
-        if (r[bel^1][r[bel][per].p[i]].live) return r[bel][per].p[i];
+        if (r[bel^1][r[bel][per].p[i]].hp > 0) return r[bel][per].p[i];
     }
     cerr << "fatel error:00" << '\n';
     assert(0);

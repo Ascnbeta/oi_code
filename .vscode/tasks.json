@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "cppbuilds",
-            "command": "D:\\toolchains\\mingw-w64\\bin\\g++.exe",
+            "command": "D:\\toolchains\\llvm-mingw-20250709-msvcrt-i686\\llvm-mingw-20250709-msvcrt-i686\\bin\\i686-w64-mingw32-g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
@@ -11,10 +11,11 @@
                 "-o",
                 "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
                 "-std=c++14",
-                // "-O2",
+                "-O2",
                 "-Wall",
                 "-Wextra",
                 "-Wl,-stack=536870912",
+                // "-fsanitize=undefined",
                 "-DLOCAL"
             ],
             "options": {
