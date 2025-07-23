@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "cppbuilds",
-            "command": "D:\\toolchains\\llvm-mingw-20250709-msvcrt-i686\\llvm-mingw-20250709-msvcrt-i686\\bin\\i686-w64-mingw32-g++.exe",
+            "command": "D:\\toolchains\\i686-14.2.0-release-win32-dwarf-ucrt-rt_v12-rev1\\mingw32\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
@@ -16,6 +16,32 @@
                 "-Wextra",
                 "-Wl,-stack=536870912",
                 // "-fsanitize=undefined",
+                "-DLOCAL"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "调试器生成的任务。"
+        },
+        {
+            "type": "cppbuild",
+            "label": "cppbuilds-fsanitize",
+            "command": "D:\\toolchains\\llvm-mingw-20250709-msvcrt-i686\\llvm-mingw-20250709-msvcrt-i686\\bin\\g++.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${fileDirname}\\${fileBasename}",
+                "-o",
+                "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
+                "-std=c++14",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-Wl,-stack=536870912",
+                "-fsanitize=undefined",
                 "-DLOCAL"
             ],
             "options": {
