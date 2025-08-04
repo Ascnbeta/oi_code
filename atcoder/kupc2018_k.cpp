@@ -19,11 +19,12 @@ inline void write(T x) {
     if (x/10) write(x/10);
     putchar(x%10+'0');
 }
+int n,m,k;
 int main() {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
     freopen("D:/codes/exe/a.out","w",stdout);
 #endif
-
+    
     return 0;
 }
