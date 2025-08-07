@@ -29,6 +29,7 @@ struct node{
     }
 };
 priority_queue<node> q;
+map<pair<int,int>,int> mp;
 int main () {
 #ifdef LOCAL
     freopen("D:/codes/exe/a.in","r",stdin);
@@ -37,16 +38,15 @@ int main () {
     read(n);
     for (int i = 1; i <= n; i++) read(a[i]);
     for (int i = 1; i <= n; i++) read(b[i]);
-    sort(a+1,a+n+1);
-    sort(b+1,b+n+1);
     q.push({1,1});
     int n1 = n;
     while (n1--) {
         write(a[q.top().i]+b[q.top().j]),putchar(' ');
         int p = q.top().i,Q = q.top().j;
+
         q.pop();
-        if (p+1 <= n) q.push({p+1,Q});
-        if (Q+1 <= n) q.push({p,Q+1});
+        if (p+1 <= n && mp.count({p+1,Q}) == 0) q.push({p+1,Q}),mp[{p+1,Q}] = 1;
+        if (Q+1 <= n && mp.count({p,Q+1}) == 0) q.push({p,Q+1}),mp[{p,Q+1}] = 1;
     }
     return 0;
 }
