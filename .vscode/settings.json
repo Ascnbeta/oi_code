@@ -101,5 +101,9 @@
 
     },
     "files.autoSave": "afterDelay",
-    "C_Cpp.codeAnalysis.runAutomatically": true
+    "C_Cpp.codeAnalysis.runAutomatically": true,
+    "editor.fontLigatures": true,
+    "C_Cpp.codeAnalysis.clangTidy.args": [
+        "-std=c++14"
+    ]
 }
