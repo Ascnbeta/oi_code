@@ -80,7 +80,7 @@
             "preLaunchTask": "cppbuilds-laptop"
         },
         {
-            "name": "C/C++: g++.exe 生成和调试活动文件（二南）",
+            "name": "C/C++: g++.exe 生成和调试活动文件（郑州）",
             "type": "cppdbg",
             "request": "launch",
             "program": "D:\\codes\\exe\\${fileBasenameNoExtension}.exe",
@@ -90,7 +90,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\mingw64\\mingw64\\bin\\gdb.exe",
+            "miDebuggerPath": "D:\\toolchains\\mingw-w64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -103,7 +103,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "cppbuilds-ernan"
+            "preLaunchTask": "cppbuilds-zhengzhou"
         },
         {
             "name": "C/C++: gcc.exe 生成和调试活动文件",

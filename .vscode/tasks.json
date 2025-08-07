@@ -54,8 +54,8 @@
         },
         {
             "type": "cppbuild",
-            "label": "cppbuilds-ernan",
-            "command": "D:\\mingw64\\mingw64\\bin\\g++.exe",
+            "label": "cppbuilds-zhengzhou",
+            "command": "D:\\toolchains\\mingw-w64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
