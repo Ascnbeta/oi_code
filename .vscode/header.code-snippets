@@ -30,7 +30,7 @@
 			"inline void write(T x) {",
 			    "\tif (x<0) x=-x,putchar('-');",
 			    "\tif (x/10) write(x/10);",
-			    "\tputchar(x%10+'a');",
+			    "\tputchar(x%10+'0');",
 			"}",
 			"int main () {",
 			"#ifdef LOCAL",
